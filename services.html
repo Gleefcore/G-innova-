@@ -142,14 +142,47 @@
               <label><span>Prénom <b>*</b></span><input type="text" id="order-firstname" name="prenom" autocomplete="given-name" required placeholder="Votre prénom" /></label>
               <label class="field-full"><span>Entreprise ou activité</span><input type="text" id="order-business" name="activite" autocomplete="organization" placeholder="Ex. boutique, association, projet personnel…" /></label>
               <label class="field-full"><span>Service souhaité <b>*</b></span>
-                <select id="order-service" name="service" required>
+                <select id="order-service" name="service" required onchange="updateDynamicFields()">
                   <option value="">Sélectionner un service</option>
-                  <option value="graphisme">Conception graphique</option>
-                  <option value="web">Conception de site web</option>
-                  <option value="outils">Conception d'un outil informatique</option>
-                  <option value="formation">Formation en entrepreneuriat</option>
+                  <option value="graphisme">Conception graphique (à partir de 10 000 FCFA)</option>
+                  <option value="web">Conception de site web (à partir de 150 000 FCFA)</option>
+                  <option value="outils">Conception d'un outil informatique (Sur devis)</option>
+                  <option value="formation">Formation en entrepreneuriat (Catalogue)</option>
                 </select>
               </label>
+              
+              <div id="dynamic-fields-web" class="field-full dynamic-section" style="display:none;">
+                <div class="form-grid" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <label><span>Type de site</span>
+                    <select id="web-type" name="web-type">
+                      <option value="vitrine">Site Vitrine (Présentation)</option>
+                      <option value="ecommerce">E-commerce (Vente en ligne)</option>
+                      <option value="portfolio">Portfolio</option>
+                    </select>
+                  </label>
+                  <label><span>Nombre de pages estimé</span><input type="number" id="web-pages" name="web-pages" placeholder="Ex: 5" /></label>
+                  <label class="field-full"><span>Avez-vous déjà un nom de domaine ?</span>
+                    <select id="web-domain" name="web-domain">
+                      <option value="non">Non, je veux que vous vous en chargiez</option>
+                      <option value="oui">Oui, je l'ai déjà</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div id="dynamic-fields-graphisme" class="field-full dynamic-section" style="display:none;">
+                <div class="form-grid" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <label><span>Support principal</span>
+                    <select id="design-type" name="design-type">
+                      <option value="logo">Logo / Identité Visuelle</option>
+                      <option value="affiche">Affiche / Flyer</option>
+                      <option value="social">Visuels Réseaux Sociaux</option>
+                      <option value="autre">Autre (préciser dans les détails)</option>
+                    </select>
+                  </label>
+                  <label><span>Couleurs préférées</span><input type="text" id="design-colors" name="design-colors" placeholder="Ex: Bleu et Or" /></label>
+                </div>
+              </div>
               <label class="field-full"><span>Détail de la commande <b>*</b></span><textarea id="order-details" name="details" rows="5" required placeholder="Décrivez ce que vous souhaitez obtenir, le public visé et les éléments déjà disponibles."></textarea></label>
               <label><span>Délai souhaité</span><input type="text" id="order-deadline" name="delai" placeholder="Ex. avant le 30 août" /></label>
               <label><span>Budget indicatif</span><input type="text" id="order-budget" name="budget" inputmode="numeric" placeholder="Facultatif" /></label>

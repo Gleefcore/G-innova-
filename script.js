@@ -54,6 +54,7 @@
     if (!serviceSelect || !serviceNames[service]) return;
     serviceSelect.value = service;
     serviceSelect.closest('label')?.classList.remove('field-error');
+    if (window.updateDynamicFields) window.updateDynamicFields();
   };
 
   const requestedService = new URLSearchParams(window.location.search).get('service');
@@ -100,8 +101,34 @@
     field?.addEventListener('change', () => field.closest('label')?.classList.remove('field-error'));
   });
 
+  window.updateDynamicFields = () => {
+    const service = document.querySelector('#order-service').value;
+    document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
+    if (service === 'web') {
+      const el = document.getElementById('dynamic-fields-web');
+      if (el) el.style.display = 'block';
+    } else if (service === 'graphisme') {
+      const el = document.getElementById('dynamic-fields-graphisme');
+      if (el) el.style.display = 'block';
+    }
+  };
+
   const buildMessage = () => {
-    const serviceLabel = serviceNames[fields.service.value] || fields.service.value;
+    const serviceVal = fields.service.value;
+    const serviceLabel = serviceNames[serviceVal] || serviceVal;
+    
+    let dynamicText = '';
+    if (serviceVal === 'web') {
+      const webType = document.querySelector('#web-type').options[document.querySelector('#web-type').selectedIndex].text;
+      const webPages = clean(document.querySelector('#web-pages').value) || 'Non précisé';
+      const webDomain = document.querySelector('#web-domain').options[document.querySelector('#web-domain').selectedIndex].text;
+      dynamicText = `\n[Spécifications Web]\nType de site : ${webType}\nNombre de pages estimé : ${webPages}\nNom de domaine : ${webDomain}\n`;
+    } else if (serviceVal === 'graphisme') {
+      const designType = document.querySelector('#design-type').options[document.querySelector('#design-type').selectedIndex].text;
+      const designColors = clean(document.querySelector('#design-colors').value) || 'Non précisé';
+      dynamicText = `\n[Spécifications Design]\nSupport principal : ${designType}\nCouleurs préférées : ${designColors}\n`;
+    }
+
     const lines = [
       'Bonjour G-INNOVA,',
       '',
@@ -111,7 +138,7 @@
       `Prénom : ${clean(fields.firstname.value)}`,
       `Entreprise / activité : ${clean(fields.business.value) || 'Non précisée'}`,
       `Service souhaité : ${serviceLabel}`,
-      '',
+      dynamicText,
       'Détail de la commande :',
       clean(fields.details.value),
       '',
@@ -138,4 +165,36 @@
     const subject = `Demande de consultation — ${serviceLabel} — ${clean(fields.firstname.value)} ${clean(fields.lastname.value)}`;
     window.location.href = `mailto:gweteugene05@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   });
+  
+  // Initialize dynamic fields if a service is pre-selected
+  if(fields.service.value) {
+    window.updateDynamicFields();
+  }
 })();
+
+  // Dashboard filtering logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+  
+  if (filterBtns.length > 0 && projectCards.length > 0) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        const filterValue = btn.getAttribute('data-filter');
+        
+        projectCards.forEach(card => {
+          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+            card.style.display = 'flex';
+            setTimeout(() => card.style.opacity = '1', 50);
+          } else {
+            card.style.opacity = '0';
+            setTimeout(() => card.style.display = 'none', 300);
+          }
+        });
+      });
+    });
+  }
