@@ -1,0 +1,16 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/carte",
+      "destination": "/carte.html",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/projets.html",
+      "permanent": true
+    }
+  ]
+}

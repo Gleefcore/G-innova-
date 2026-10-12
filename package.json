@@ -1,0 +1,16 @@
+{
+  "name": "g-innova-site",
+  "version": "1.0.0",
+  "description": "Site web officiel G-INNOVA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ginnova",
+    "website"
+  ],
+  "author": "G-INNOVA",
+  "license": "ISC"
+}

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://g-innova.vercel.app/sitemap.xml
